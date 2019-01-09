@@ -1,6 +1,5 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 // import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
-import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer from './root.reducer';
 import rootSaga from './root.saga';
@@ -16,12 +15,14 @@ const configureStore = () => {
 
     const store = createStore(
         rootReducer,
+        applyMiddleware(sagaMiddleware)
         // composeWithDevTools(middleware),
     );
 
     sagaMiddleware.run(rootSaga);
+    console.info('trigger');
 
-    return [store, persistStore(store)];
+    return store;
 };
 
 export default configureStore;
